@@ -1,0 +1,33 @@
+<!doctype html>
+<head>
+<title>3D Modeler</title>
+<script type="text/javascript" src="{{ url_for('static', filename='xtk.js') }}"></script>
+{% if home %}
+<script type="text/javascript" src="{{ url_for('static', filename='modeler.js') }}"></script>
+{% endif %}
+{% if display %}
+<script>
+	window.onload = function() {
+		var r = new X.renderer3D();
+		r.init();
+		var object = new X.volume();
+		object.file = "{{ url_for('static', filename=display) }}";
+		object.volumeRendering = true;		// this lags
+		//object.opacity = 0.2;
+		object.lowerThreshold = 999;	// otherwise the background is black
+		r.add(object)
+		r.render();
+	}
+</script>
+{% endif %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='modeler.css') }}">
+</head>
+<body>
+<div id='upload' style='position:absolute;bottom:10px;left:10px;'>
+<form action="/upload" method=post enctype=multipart/form-data>
+	<input type=file name=file>
+	<input type=submit value=Upload>
+</form>
+</div>
+</body>
+</html>
